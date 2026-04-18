@@ -1,0 +1,26 @@
+name: Matrix Configuration
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    # Use a matrix variable for the runner type
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        # This defines the two environments to run in parallel
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Echo Docker Details
+        run: docker info
+
+      - name: Run Images
+        run: docker run hello-world
