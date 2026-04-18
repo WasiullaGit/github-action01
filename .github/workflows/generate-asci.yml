@@ -22,7 +22,7 @@ jobs:
         run: grep -i "dragon" dragon.txt
 
       - name: Read  File  
-        run: car dragon.txt
+        run: cat dragon.txt
         
       - name: Checkout Repo File Exists 
         run: ls           
