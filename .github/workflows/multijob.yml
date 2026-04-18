@@ -1,0 +1,45 @@
+name: Dragon Workflow
+
+on: [push, workflow_dispatch]
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install cowsay
+        run: sudo apt-get update && sudo apt-get install -y cowsay
+
+      - name: Generate Dragon Artwork
+        run: |
+          # Use the full path for cowsay in some Ubuntu environments
+          /usr/games/cowsay -f dragon "Run for cover, I am a DRAGON....RUN" >> dragon.txt
+          
+      - name: Upload dragon file
+        uses: actions/upload-artifact@v4
+        with:
+          name: dragon-file
+          path: dragon.txt
+
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download dragon file
+        uses: actions/download-artifact@v4
+        with:
+          name: dragon-file
+
+      - name: Grep Dragon Word
+        run: grep -i "dragon" dragon.txt
+
+  job3:
+    needs: job2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download dragon file
+        uses: actions/download-artifact@v4
+        with:
+          name: dragon-file
+
+      - name: Read Dragon File
+        run: cat dragon.txt
